@@ -53,10 +53,12 @@ atac <- readRDS("proj_LSI_GeneScores_Annotations_Int.rds")
 # Plot Patient UMAPs for RNA/ATAC
 
 # RNA UMAP first
+# The positional information of every cell is in rna@reductions$umap@cell.embeddings
 rna.df <- as.data.frame(rna@reductions$umap@cell.embeddings)
 length(which(rownames(rna.df)==rownames(rna@meta.data)))
 rna.df$Sample <- rna$Sample
 
+# Just general dot point parameter
 rna.sample.plot <-ggplot(rna.df,aes(x = UMAP_1,y=UMAP_2,color = Sample))+
   geom_point(size = .1)+
   theme_classic()+
@@ -188,6 +190,7 @@ p1 <- ggplot(rna.df,aes(x = UMAP_1,y=UMAP_2,color = cluster.new))+
   scale_color_manual(values = cols)+
   guides(colour = guide_legend(override.aes = list(size=6)))+ggsave("Cell_Type_RNA.pdf",width = 8,height = 7)
 
+# Add labels for cluster in dot plot
 p1 <- ggplot(rna.df,aes(x = UMAP_1,y=UMAP_2,color = cluster.new))+
   geom_point(size = .1)+
   theme_classic()+
@@ -364,3 +367,5 @@ ggplot(meta,aes(x=cluster,y=Total_CNVs,fill=cluster))+geom_boxplot()+coord_flip(
   ggsave("CNV_BoxPlot.pdf",width = 4,height = 8)
 
 writeLines(capture.output(sessionInfo()), "sessionInfo.txt")
+
+# All the plots generated here are further modified to be the plots shown in published paper.
